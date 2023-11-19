@@ -32,7 +32,8 @@ const allowedOrigins = [
   'https://mern-f1.vercel.app',
   'http://localhost:3000',
   'https://regbills-f1.vercel.app',
-  'https://regbills-mui-f1.vercel.app'
+  'https://regbills-mui-f1.vercel.app',
+  'https://inv-f1.vercel.app'
   // Añadir más URLs permitidas según sea necesario
 ];
 
@@ -58,7 +59,8 @@ app.use(cors({
     'https://react-simple.onrender.com',
     'https://mern-f1.onrender.com',
     'https://mern-f1.vercel.app',
-    'https://regbills-mui-f1.vercel.app'
+    'https://regbills-mui-f1.vercel.app',
+    'https://inv-f1.vercel.app/'
   ],
   methods: ['GET', 'POST', 'DELETE', 'UPDATE', 'PUT', 'PATCH'],
 }));
