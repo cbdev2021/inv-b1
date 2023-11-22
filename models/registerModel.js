@@ -6,10 +6,10 @@ const registerSchema = mongoose.Schema(
       type: String,
       required: true,
     },
-    descRegistro: {
-      type: String,
-      required: true,
-    },
+    // descRegistro: {
+    //   type: String,
+    //   required: true,
+    // },
     idUsuario: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User', // Hace referencia al modelo de usuario
