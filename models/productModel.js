@@ -6,6 +6,11 @@ const productSchema = mongoose.Schema(
       type: String,
       required: true,
     },
+    idUsuario: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User', // Hace referencia al modelo de usuario
+      required: true,
+    },
     correlative: {
       type: Number,
       required: true,
@@ -18,11 +23,7 @@ const productSchema = mongoose.Schema(
     //   type: String,
     //   required: true,
     // },
-    // idUsuario: {
-    //   type: mongoose.Schema.Types.ObjectId,
-    //   ref: 'User', // Hace referencia al modelo de usuario
-    //   required: true,
-    // },
+   
   },
   {
     timestamps: true,

@@ -58,7 +58,7 @@ import Sequence from '../models/sequenceModel.js';
 // });
 
 const addProduct = asyncHandler(async (req, res) => {
-  const { product } = req.body;
+  const { product, idUsuario } = req.body;
 
   try {
     // Encuentra y actualiza el documento de la secuencia, incrementando el valor en 1
@@ -75,6 +75,8 @@ const addProduct = asyncHandler(async (req, res) => {
     const newProduct = await Product.create({
       product,
       correlative: newCorrelative,
+      //idUsuario: userId
+      idUsuario: idUsuario
     });
 
     if (newProduct) {
