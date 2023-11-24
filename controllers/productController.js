@@ -175,16 +175,18 @@ const getProduct = asyncHandler(async (req, res) => {
 // @access  Private
 const getProductByUserId = asyncHandler(async (req, res) => {
   console.log("get products ");
-
-
   const userId = req.params.idUsuario;
+  console.log("try userId: "+userId);
 
   try {
     const product = await Product.find({ idUsuario: userId });
+    console.log("try products: "+product);
 
     if (product) {
+      console.log("if products ");
       res.json(product);
     } else {
+      console.log("else products ");
       res.status(404);
       throw new Error('No se encontraron Product para este usuario');
     }
