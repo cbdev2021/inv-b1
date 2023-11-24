@@ -58,12 +58,8 @@ import Sequence from '../models/sequenceModel.js';
 // });
 
 const addProduct = asyncHandler(async (req, res) => {
-
-  console.log("add product-req");
-  console.log(req);
   
-  const { description } = req.body;
-  //const userId = req.user._id;
+  const { description, idUsuario } = req.body;
   const userId = req.user._id;
 
   try {
@@ -178,20 +174,14 @@ const getProduct = asyncHandler(async (req, res) => {
 // @route   GET /api/users/get-type-values/:idUsuario
 // @access  Private
 const getProductByUserId = asyncHandler(async (req, res) => {
-  console.log("get products ");
   const userId = req.params.idUsuario;
-  console.log("try userId: "+userId);
 
   try {
     const product = await Product.find({ idUsuario: userId });
-    console.log("try - product: ");
-    console.log(product);
 
     if (product) {
-      console.log("if products ");
       res.json(product);
     } else {
-      console.log("else products ");
       res.status(404);
       throw new Error('No se encontraron Product para este usuario');
     }
