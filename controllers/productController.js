@@ -180,7 +180,8 @@ const getProductByUserId = asyncHandler(async (req, res) => {
 
   try {
     const product = await Product.find({ idUsuario: userId });
-    console.log("try products: "+product);
+    console.log("try - product: ");
+    console.log(product);
 
     if (product) {
       console.log("if products ");
