@@ -9,6 +9,7 @@ import { notFound, errorHandler } from './middleware/errorMiddleware.js';
 import userRoutes from './routes/userRoutes.js';
 import addRegisterRoutes from './routes/addRegisterRoutes.js';
 import typeValuesRoutes from './routes/typeValuesRoutes.js';
+import productsRoutes from './routes/productsRoutes.js';
 //const cors = require('cors'); //solucion abajo
 import cors from 'cors';
 
@@ -74,6 +75,7 @@ app.use(cookieParser());
 app.use('/api/users', userRoutes);
 app.use('/api/registers', addRegisterRoutes); 
 app.use('/api/type-value', typeValuesRoutes); 
+app.use('/api/products', productsRoutes); 
 
 if (process.env.NODE_ENV === 'production') {
   const __dirname = path.resolve();
