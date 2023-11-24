@@ -58,8 +58,12 @@ import Sequence from '../models/sequenceModel.js';
 // });
 
 const addProduct = asyncHandler(async (req, res) => {
+
+  console.log("add product-req");
+  console.log(req);
   
-  const { description, idUsuario } = req.body;
+  const { description } = req.body;
+  //const userId = req.user._id;
   const userId = req.user._id;
 
   try {
