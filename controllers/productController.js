@@ -58,7 +58,9 @@ import Sequence from '../models/sequenceModel.js';
 // });
 
 const addProduct = asyncHandler(async (req, res) => {
-  const { product, idUsuario } = req.body;
+  
+  const { description, idUsuario } = req.body;
+  const userId = req.user._id;
 
   try {
     // Encuentra y actualiza el documento de la secuencia, incrementando el valor en 1
@@ -73,10 +75,10 @@ const addProduct = asyncHandler(async (req, res) => {
 
     // Crear el nuevo producto con el correlativo actualizado
     const newProduct = await Product.create({
-      product,
+      description,
       correlative: newCorrelative,
-      //idUsuario: userId
-      idUsuario: idUsuario
+      idUsuario: userId
+      //idUsuario: idUsuario
     });
 
     if (newProduct) {
@@ -101,15 +103,17 @@ const addProduct = asyncHandler(async (req, res) => {
 // @route   PUT /api/users/update-type-values/:id
 // @access  Private
 const updateProduct = asyncHandler(async (req, res) => {
-  const { typevalue, subtype, description } = req.body;
+  //const { typevalue, subtype, description } = req.body;
+  const {description} = req.body;
 
   try {
     const product = await Product.findById(req.params.id);
 
     if (product) {
       if (product.idUsuario.toString() === req.user._id.toString()) {
-        product.typevalue = typevalue;
-        product.subtype = subtype;
+        // product.typevalue = typevalue;
+        // product.subtype = subtype;
+        // product.description = description;
         product.description = description;
 
         const updatedProduct = await product.save();
