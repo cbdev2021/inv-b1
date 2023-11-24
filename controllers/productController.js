@@ -174,6 +174,9 @@ const getProduct = asyncHandler(async (req, res) => {
 // @route   GET /api/users/get-type-values/:idUsuario
 // @access  Private
 const getProductByUserId = asyncHandler(async (req, res) => {
+  console.log("get products ");
+
+
   const userId = req.params.idUsuario;
 
   try {
