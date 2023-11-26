@@ -2,8 +2,8 @@ import mongoose from 'mongoose';
 
 const invoiceSchema = mongoose.Schema(
   {
-    numeroFactura: {
-      type: String,
+    correlative: {
+      type: Number,
       required: true,
     },
     fechaEmision: {

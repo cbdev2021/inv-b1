@@ -2,6 +2,10 @@ import mongoose from 'mongoose';
 
 const productSchema = mongoose.Schema(
   {
+    correlative: {
+      type: Number,
+      required: true,
+    },
     description: {
       type: String,
       required: true,
@@ -9,10 +13,6 @@ const productSchema = mongoose.Schema(
     idUsuario: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User', // Hace referencia al modelo de usuario
-      required: true,
-    },
-    correlative: {
-      type: Number,
       required: true,
     },
     // subtype: {
