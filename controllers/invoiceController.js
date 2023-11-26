@@ -1,5 +1,6 @@
 import asyncHandler from 'express-async-handler';
 import Invoice from '../models/invoiceModel.js';
+import Sequence from '../models/sequenceModel.js';
 
 // @desc    Agregar una factura
 // @route   POST /api/invoices/add-invoice
@@ -21,10 +22,21 @@ const addInvoice = asyncHandler(async (req, res) => {
     } = req.body;
 
     try {
+        // Encuentra y actualiza el documento de la secuencia, incrementando el valor en 1
+        const updatedSequence = await Sequence.findOneAndUpdate(
+            { _id: "sequenceInvoiceId" },
+            { $inc: { sequence_value: 1 } },
+            { new: true, upsert: true }
+        );
+
+        // El valor actualizado de la secuencia es el nuevo correlativo
+        const newCorrelative = updatedSequence.sequence_value;
+
         const newInvoice = await Invoice.create({
             numeroFactura,
             fechaEmision,
             idUsuario,
+            correlative: newCorrelative,
             clienteProveedor,
             productosServicios,
             subtotal,
