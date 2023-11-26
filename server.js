@@ -10,17 +10,13 @@ import userRoutes from './routes/userRoutes.js';
 import addRegisterRoutes from './routes/addRegisterRoutes.js';
 import typeValuesRoutes from './routes/typeValuesRoutes.js';
 import productsRoutes from './routes/productsRoutes.js';
+import invoiceRoutes from './routes/invoiceRoutes.js';
 //const cors = require('cors'); //solucion abajo
 import cors from 'cors';
 
-
-
 const port = process.env.PORT || 5000;
-
 connectDB();
-
 const app = express();
-
 //1
 // app.use((req, res, next) => {
 //   res.header('Access-Control-Allow-Origin', 'https://mern-f1.vercel.app'); // Reemplaza con tu dominio permitido
@@ -66,7 +62,6 @@ app.use(cors({
   methods: ['GET', 'POST', 'DELETE', 'UPDATE', 'PUT', 'PATCH'],
 }));
 
-
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -76,6 +71,7 @@ app.use('/api/users', userRoutes);
 app.use('/api/registers', addRegisterRoutes); 
 app.use('/api/type-value', typeValuesRoutes); 
 app.use('/api/products', productsRoutes); 
+app.use('/api/invoices', invoiceRoutes); 
 
 if (process.env.NODE_ENV === 'production') {
   const __dirname = path.resolve();
