@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 
 const productSchema = mongoose.Schema(
   {
-    correlative: {
+    productId: {
       type: Number,
       required: true,
     },
