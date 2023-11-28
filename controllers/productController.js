@@ -75,8 +75,8 @@ const addProduct = asyncHandler(async (req, res) => {
 
     // Crear el nuevo producto con el correlativo actualizado
     const newProduct = await Product.create({
+      productId: newCorrelative,
       description,
-      correlative: newCorrelative,
       idUsuario: userId
       //idUsuario: idUsuario
     });

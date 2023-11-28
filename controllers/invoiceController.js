@@ -33,10 +33,10 @@ const addInvoice = asyncHandler(async (req, res) => {
         const newCorrelative = updatedSequence.sequence_value;
 
         const newInvoice = await Invoice.create({
+            invoiceID: newCorrelative,
             numeroFactura,
             fechaEmision,
             idUsuario,
-            correlative: newCorrelative,
             clienteProveedor,
             productosServicios,
             subtotal,

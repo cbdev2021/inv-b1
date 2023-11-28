@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 
 const invoiceSchema = mongoose.Schema(
   {
-    correlative: {
+    invoiceID: {
       type: Number,
       required: true,
     },
