@@ -2,17 +2,29 @@ import mongoose from 'mongoose';
 
 const productSchema = mongoose.Schema(
   {
+    idUsuario: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User', // Hace referencia al modelo de usuario
+      required: true,
+    },
     productId: {
       type: Number,
+      required: true,
+    },
+    name: {
+      type: String,
       required: true,
     },
     description: {
       type: String,
       required: true,
     },
-    idUsuario: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'User', // Hace referencia al modelo de usuario
+    price: {
+      type: Number,
+      required: true,
+    },
+    amount: {
+      type: Number,
       required: true,
     },
     // subtype: {
@@ -23,7 +35,7 @@ const productSchema = mongoose.Schema(
     //   type: String,
     //   required: true,
     // },
-   
+
   },
   {
     timestamps: true,

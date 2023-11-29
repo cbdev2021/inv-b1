@@ -58,8 +58,10 @@ import Sequence from '../models/sequenceModel.js';
 // });
 
 const addProduct = asyncHandler(async (req, res) => {
-  
-  const { description, idUsuario } = req.body;
+
+  //const { description, idUsuario } = req.body;
+  const { name, description, price, amount } = req.body;
+
   const userId = req.user._id;
 
   try {
@@ -75,9 +77,12 @@ const addProduct = asyncHandler(async (req, res) => {
 
     // Crear el nuevo producto con el correlativo actualizado
     const newProduct = await Product.create({
+      idUsuario: userId,
       productId: newCorrelative,
-      description,
-      idUsuario: userId
+      name: name,
+      description: description,
+      price: price,
+      amount: amount
       //idUsuario: idUsuario
     });
 
@@ -104,7 +109,7 @@ const addProduct = asyncHandler(async (req, res) => {
 // @access  Private
 const updateProduct = asyncHandler(async (req, res) => {
   //const { typevalue, subtype, description } = req.body;
-  const {description} = req.body;
+  const { description } = req.body;
 
   try {
     const product = await Product.findById(req.params.id);
