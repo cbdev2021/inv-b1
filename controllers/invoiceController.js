@@ -6,19 +6,21 @@ import Sequence from '../models/sequenceModel.js';
 // @route   POST /api/invoices/add-invoice
 // @access  Public
 const addInvoice = asyncHandler(async (req, res) => {
+    const userId = req.user._id;
+
     const {
-        numeroFactura,
-        fechaEmision,
-        idUsuario,
-        clienteProveedor,
-        productosServicios,
-        subtotal,
-        impuestos,
-        total,
-        metodoPago,
-        tipo,
-        proveedor,
-        vendedor,
+        //invoiceID,
+        invoiceType,
+
+        dateIssue,
+        subTotal,
+        taxes,
+
+        customer,
+        paymentSell,
+
+        provider,
+        paymentBuy,
     } = req.body;
 
     try {
@@ -33,19 +35,22 @@ const addInvoice = asyncHandler(async (req, res) => {
         const newCorrelative = updatedSequence.sequence_value;
 
         const newInvoice = await Invoice.create({
+            //mandatory
             invoiceID: newCorrelative,
-            numeroFactura,
-            fechaEmision,
-            idUsuario,
-            clienteProveedor,
-            productosServicios,
-            subtotal,
-            impuestos,
-            total,
-            metodoPago,
-            tipo,
-            proveedor,
-            vendedor,
+            invoiceType: invoiceType,
+            idUsuario: userId,  //front end
+            //idUsuario: idUsuario, //prueba postman             
+            dateIssue: dateIssue,
+            subTotal: subTotal,
+            taxes:taxes,
+
+            //optionals
+            customer: customer,
+            paymentSell:paymentSell,
+
+            provider:provider,
+            paymentBuy:paymentBuy,
+
         });
 
         if (newInvoice) {
