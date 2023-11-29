@@ -42,14 +42,14 @@ const addInvoice = asyncHandler(async (req, res) => {
             //idUsuario: idUsuario, //prueba postman             
             dateIssue: dateIssue,
             subTotal: subTotal,
-            taxes:taxes,
+            taxes: taxes,
 
             //optionals
             customer: customer,
-            paymentSell:paymentSell,
+            paymentSell: paymentSell,
 
-            provider:provider,
-            paymentBuy:paymentBuy,
+            provider: provider,
+            paymentBuy: paymentBuy,
 
         });
 
@@ -67,36 +67,149 @@ const addInvoice = asyncHandler(async (req, res) => {
 // @desc    Actualizar una factura por ID
 // @route   PUT /api/invoices/update-invoice/:id
 // @access  Public
+// const updateInvoice = asyncHandler(async (req, res) => {
+//     const { numeroFactura, fechaEmision, clienteProveedor, productosServicios, subtotal, impuestos, total, metodoPago, tipo, proveedor, vendedor } = req.body;
+
+//     try {
+//         const updatedInvoice = await Invoice.findByIdAndUpdate(
+//             req.params.id,
+//             {
+//                 numeroFactura,
+//                 fechaEmision,
+//                 clienteProveedor,
+//                 productosServicios,
+//                 subtotal,
+//                 impuestos,
+//                 total,
+//                 metodoPago,
+//                 tipo,
+//                 proveedor,
+//                 vendedor,
+//             },
+//             { new: true, runValidators: true }
+//         );
+
+//         if (updatedInvoice) {
+//             res.json({ message: 'Factura actualizada con éxito', data: updatedInvoice });
+//         } else {
+//             res.status(404);
+//             throw new Error('Factura no encontrada');
+//         }
+//     } catch (error) {
+//         res.status(500).json({ message: 'Error al actualizar la factura', error: error.message });
+//     }
+// });
+
+// const updateInvoice = asyncHandler(async (req, res) => {
+
+//     const userId = req.user._id;
+
+//     const {
+//         //invoiceID,
+//         invoiceType,
+//         dateIssue,
+//         subTotal,
+//         taxes,
+
+//         customer,
+//         paymentSell,
+
+//         provider,
+//         paymentBuy,
+//     } = req.body;
+
+//     // const { numeroFactura, fechaEmision, clienteProveedor, productosServicios, subtotal, impuestos, total, metodoPago, tipo, proveedor, vendedor } = req.body;
+
+//     try {
+//         const updatedInvoice = await Invoice.findByIdAndUpdate(
+//             req.params.id,
+//             {
+//                 invoiceID: newCorrelative,
+//                 invoiceType: invoiceType,
+//                 idUsuario: userId,  //front end
+//                 //idUsuario: idUsuario, //prueba postman             
+//                 dateIssue: dateIssue,
+//                 subTotal: subTotal,
+//                 taxes:taxes,
+
+//                 //optionals
+//                 customer: customer,
+//                 paymentSell:paymentSell,
+
+//                 provider:provider,
+//                 paymentBuy:paymentBuy,
+//             },
+//             { new: true, runValidators: true }
+//         );
+
+//         if (updatedInvoice) {
+//             res.json({ message: 'Factura actualizada con éxito', data: updatedInvoice });
+//         } else {
+//             res.status(404);
+//             throw new Error('Factura no encontrada');
+//         }
+//     } catch (error) {
+//         res.status(500).json({ message: 'Error al actualizar la factura', error: error.message });
+//     }
+// });
+
 const updateInvoice = asyncHandler(async (req, res) => {
-    const { numeroFactura, fechaEmision, clienteProveedor, productosServicios, subtotal, impuestos, total, metodoPago, tipo, proveedor, vendedor } = req.body;
+
+    //const userId = req.user._id;
+    const userId = req.user._id;
+
+
+    //const { typevalue, subtype, description } = req.body;
+    const {
+        //invoiceType,
+        dateIssue,
+        subTotal,
+        taxes,
+
+        customer,
+        paymentSell,
+
+        provider,
+        paymentBuy
+    } = req.body;
 
     try {
-        const updatedInvoice = await Invoice.findByIdAndUpdate(
-            req.params.id,
-            {
-                numeroFactura,
-                fechaEmision,
-                clienteProveedor,
-                productosServicios,
-                subtotal,
-                impuestos,
-                total,
-                metodoPago,
-                tipo,
-                proveedor,
-                vendedor,
-            },
-            { new: true, runValidators: true }
-        );
+        const invoice = await Invoice.findById(req.params.id);
 
-        if (updatedInvoice) {
-            res.json({ message: 'Factura actualizada con éxito', data: updatedInvoice });
+        if (invoice) {
+            if (invoice.idUsuario.toString() === req.user._id.toString()) {
+                // invoice.typevalue = typevalue;
+                // invoice.subtype = subtype;
+                // invoice.description = description;
+
+                //invoiceID: newCorrelative,
+                //invoiceType: invoiceType;
+                //idUsuario: userId,  //front end
+                //idUsuario: idUsuario; //prueba postman             
+                invoice.dateIssue=dateIssue;
+                invoice.subTotal=subTotal;
+                invoice.taxes=taxes;
+
+                //optionals
+                invoice.customer= customer;
+                invoice.paymentSell=paymentSell;
+
+                invoice.provider=provider;
+                invoice.paymentBuy=paymentBuy;
+              
+
+                const updatedInvoice = await invoice.save();
+                res.json({ message: 'Invoice actualizado con éxito', data: updatedInvoice });
+            } else {
+                res.status(403);
+                throw new Error('No tienes permiso para actualizar este Invoice');
+            }
         } else {
             res.status(404);
-            throw new Error('Factura no encontrada');
+            throw new Error('Invoice no encontrado');
         }
     } catch (error) {
-        res.status(500).json({ message: 'Error al actualizar la factura', error: error.message });
+        res.status(500).json({ message: 'Error al actualizar Invoice', error: error.message });
     }
 });
 
