@@ -11,6 +11,7 @@ import addRegisterRoutes from './routes/addRegisterRoutes.js';
 import typeValuesRoutes from './routes/typeValuesRoutes.js';
 import productsRoutes from './routes/productsRoutes.js';
 import invoiceRoutes from './routes/invoiceRoutes.js';
+import productsInvoiceRoutes from './routes/productInvoiceRoutes.js';
 //const cors = require('cors'); //solucion abajo
 import cors from 'cors';
 
@@ -72,6 +73,7 @@ app.use('/api/registers', addRegisterRoutes);
 app.use('/api/type-value', typeValuesRoutes); 
 app.use('/api/products', productsRoutes); 
 app.use('/api/invoices', invoiceRoutes); 
+app.use('/api/products-invoices', productsInvoiceRoutes); 
 
 if (process.env.NODE_ENV === 'production') {
   const __dirname = path.resolve();
