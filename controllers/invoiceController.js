@@ -5,52 +5,130 @@ import Sequence from '../models/sequenceModel.js';
 // @desc    Agregar una factura
 // @route   POST /api/invoices/add-invoice
 // @access  Public
+// const addInvoice = asyncHandler(async (req, res) => {
+//     const userId = req.user._id;
+
+//     const {
+//         //invoiceID,
+//         invoiceType,
+
+//         dateIssue,
+//         subTotal,
+//         taxes,
+
+//         customer,
+//         paymentSell,
+
+//         provider,
+//         paymentBuy,
+//     } = req.body;
+
+//     try {
+//         // // Encuentra y actualiza el documento de la secuencia, incrementando el valor en 1
+//         // const updatedSequence = await Sequence.findOneAndUpdate(
+//         //     { _id: "sequenceInvoiceId" },
+//         //     { $inc: { sequence_value: 1 } },
+//         //     { new: true, upsert: true }
+//         // );
+//         // const newCorrelative = updatedSequence.sequence_value;
+
+//         const purchaseSeq = await Sequence.findOneAndUpdate(
+//             { _id: "sequencePurchaseId" },
+//             { $inc: { sequence_value: 1 } },
+//             { new: true, upsert: true }
+//         );
+//         const purchaseId = purchaseSeq.sequence_value;
+
+//         const saleSeq = await Sequence.findOneAndUpdate(
+//             { _id: "sequenceSaleId" },
+//             { $inc: { sequence_value: 1 } },
+//             { new: true, upsert: true }
+//         );
+//         const saleId = saleSeq.sequence_value;
+
+//         const newInvoice = await Invoice.create({
+//             //mandatory
+//             //invoiceID: newCorrelative,
+//             purchaseId: purchaseId,
+//             saleId: saleId,
+
+//             invoiceType: invoiceType,
+//             idUsuario: userId,  //front end
+//             //idUsuario: idUsuario, //prueba postman             
+//             dateIssue: dateIssue,
+//             subTotal: subTotal,
+//             taxes: taxes,
+
+//             //optionals
+//             customer: customer,
+//             paymentSell: paymentSell,
+
+//             provider: provider,
+//             paymentBuy: paymentBuy,
+
+//         });
+
+//         if (newInvoice) {
+//             res.status(201).json({ message: 'Factura agregada con éxito', data: newInvoice });
+//         } else {
+//             res.status(400);
+//             throw new Error('No se pudo agregar la factura');
+//         }
+//     } catch (error) {
+//         res.status(500).json({ message: 'Error al agregar la factura', error: error.message });
+//     }
+// });
+
+
+// @desc    Agregar una factura
+// @route   POST /api/invoices/add-invoice
+// @access  Public
 const addInvoice = asyncHandler(async (req, res) => {
     const userId = req.user._id;
 
     const {
-        //invoiceID,
         invoiceType,
-
         dateIssue,
         subTotal,
         taxes,
-
         customer,
         paymentSell,
-
         provider,
         paymentBuy,
     } = req.body;
 
     try {
-        // Encuentra y actualiza el documento de la secuencia, incrementando el valor en 1
-        const updatedSequence = await Sequence.findOneAndUpdate(
-            { _id: "sequenceInvoiceId" },
-            { $inc: { sequence_value: 1 } },
-            { new: true, upsert: true }
-        );
+        let purchaseId;
+        let saleId;
 
-        // El valor actualizado de la secuencia es el nuevo correlativo
-        const newCorrelative = updatedSequence.sequence_value;
+        if (invoiceType === "Purchase") {
+            const purchaseSeq = await Sequence.findOneAndUpdate(
+                { _id: "sequencePurchaseId" },
+                { $inc: { sequence_value: 1 } },
+                { new: true, upsert: true }
+            );
+            purchaseId = purchaseSeq.sequence_value;
+        } else if (invoiceType === "Sales") {
+            const saleSeq = await Sequence.findOneAndUpdate(
+                { _id: "sequenceSaleId" },
+                { $inc: { sequence_value: 1 } },
+                { new: true, upsert: true }
+            );
+            saleId = saleSeq.sequence_value;
+        }
 
         const newInvoice = await Invoice.create({
-            //mandatory
-            invoiceID: newCorrelative,
+            purchaseId: purchaseId || null,
+            saleId: saleId || null,
             invoiceType: invoiceType,
-            idUsuario: userId,  //front end
-            //idUsuario: idUsuario, //prueba postman             
+            idUsuario: userId,
             dateIssue: dateIssue,
             subTotal: subTotal,
             taxes: taxes,
-
-            //optionals
             customer: customer,
             paymentSell: paymentSell,
-
             provider: provider,
             paymentBuy: paymentBuy,
-
         });
 
         if (newInvoice) {
@@ -63,6 +141,8 @@ const addInvoice = asyncHandler(async (req, res) => {
         res.status(500).json({ message: 'Error al agregar la factura', error: error.message });
     }
 });
+
+
 
 // @desc    Actualizar una factura por ID
 // @route   PUT /api/invoices/update-invoice/:id
@@ -186,17 +266,17 @@ const updateInvoice = asyncHandler(async (req, res) => {
                 //invoiceType: invoiceType;
                 //idUsuario: userId,  //front end
                 //idUsuario: idUsuario; //prueba postman             
-                invoice.dateIssue=dateIssue;
-                invoice.subTotal=subTotal;
-                invoice.taxes=taxes;
+                invoice.dateIssue = dateIssue;
+                invoice.subTotal = subTotal;
+                invoice.taxes = taxes;
 
                 //optionals
-                invoice.customer= customer;
-                invoice.paymentSell=paymentSell;
+                invoice.customer = customer;
+                invoice.paymentSell = paymentSell;
 
-                invoice.provider=provider;
-                invoice.paymentBuy=paymentBuy;
-              
+                invoice.provider = provider;
+                invoice.paymentBuy = paymentBuy;
+
 
                 const updatedInvoice = await invoice.save();
                 res.json({ message: 'Invoice actualizado con éxito', data: updatedInvoice });
