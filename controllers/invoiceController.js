@@ -348,10 +348,77 @@ const getInvoicesByUserId = asyncHandler(async (req, res) => {
     }
 });
 
+// Nueva función para generar un nuevo ID
+// @route   GET /api/invoices/generate-id/:type
+// @access  Public
+// const generateId = asyncHandler(async (req, res) => {
+//     const { invoiceType } = req.params;
+
+//     try {
+//         let sequenceId;
+
+//         if (invoiceType === "Purchase") {
+//             const purchaseSeq = await Sequence.findOneAndUpdate(
+//                 { _id: "sequencePurchaseId" },
+//                 { $inc: { sequence_value: 1 } },
+//                 { new: true, upsert: true }
+//             );
+//             sequenceId = purchaseSeq.sequence_value;
+//         } else if (invoiceType === "Sales") {
+//             const saleSeq = await Sequence.findOneAndUpdate(
+//                 { _id: "sequenceSaleId" },
+//                 { $inc: { sequence_value: 1 } },
+//                 { new: true, upsert: true }
+//             );
+//             sequenceId = saleSeq.sequence_value;
+//         }
+
+//         res.json({ sequenceId });
+//     } catch (error) {
+//         res.status(500).json({ message: 'Error al generar el ID', error: error.message });
+//     }
+// });
+
+// @desc    Obtener el valor actual de la secuencia
+// @route   GET /api/invoices/get-sequence-value/:invoiceType
+// @access  Public
+const generateId = asyncHandler(async (req, res) => {
+    const { invoiceType } = req.params;
+
+    try {
+        let sequenceId;
+        if (invoiceType === "Purchase") {
+            sequenceId = "sequencePurchaseId";
+        } else if (invoiceType === "Sales") {
+            sequenceId = "sequenceSaleId";
+        } else {
+            res.status(400);
+            throw new Error('Tipo de factura no válido');
+        }
+
+        const sequence = await Sequence.findById(sequenceId);
+
+        if (sequence) {
+            res.json({ sequence_value: sequence.sequence_value + 1 });
+        } else {
+            res.status(404);
+            throw new Error('Secuencia no encontrada');
+        }
+    } catch (error) {
+        res.status(500).json({ message: 'Error al obtener la secuencia', error: error.message });
+    }
+});
+
+
+
+
+
+
 export {
     addInvoice,
     updateInvoice,
     deleteInvoice,
     getInvoice,
-    getInvoicesByUserId
+    getInvoicesByUserId,
+    generateId
 };
