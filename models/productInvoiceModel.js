@@ -7,6 +7,14 @@ const productInvoiceSchema = mongoose.Schema(
       ref: 'User', // Hace referencia al modelo de usuario
       required: true,
     },
+    invoiceType: {
+      type: String,
+      required: true,
+    },
+    invoiceID: {
+      type: Number,
+      required: true,
+    },
     productId: {
       type: Number,
       required: true,

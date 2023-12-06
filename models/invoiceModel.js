@@ -2,18 +2,18 @@ import mongoose from 'mongoose';
 
 const invoiceSchema = mongoose.Schema(
   {
-    // invoiceID: {
+    invoiceID: {
+      type: Number,
+      required: true,
+    },
+    // purchaseId: {
     //   type: Number,
-    //   required: true,
+    //   required: false,
     // },
-    purchaseId: {
-      type: Number,
-      required: false,
-    },
-    saleId: {
-      type: Number,
-      required: false,
-    },
+    // saleId: {
+    //   type: Number,
+    //   required: false,
+    // },
     invoiceType: {
       type: String,
       required: true,

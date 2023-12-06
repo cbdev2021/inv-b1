@@ -6,7 +6,8 @@ import Sequence from '../models/sequenceModel.js';
 // @route   POST /api/users/add-product-invoice
 // @access  Private
 const addProductInvoice = asyncHandler(async (req, res) => {
-  const { name, description, price, amount } = req.body;
+  // const { name, description, price, amount } = req.body;
+  const { invoiceType, invoiceID, name, description, price, amount } = req.body;
   const userId = req.user._id;
 
   try {
@@ -20,6 +21,8 @@ const addProductInvoice = asyncHandler(async (req, res) => {
 
     const newProductInvoice = await ProductInvoice.create({
       idUsuario: userId,
+      invoiceType: invoiceType,
+      invoiceID: invoiceID,
       productId: newCorrelative,
       name: name,
       description: description,
