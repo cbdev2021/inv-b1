@@ -87,6 +87,7 @@ const addInvoice = asyncHandler(async (req, res) => {
     const userId = req.user._id;
 
     const {
+        //invoiceID,
         invoiceType,
         dateIssue,
         subTotal,
@@ -100,6 +101,7 @@ const addInvoice = asyncHandler(async (req, res) => {
     try {
         let purchaseId;
         let saleId;
+        let invoiceID;
 
         if (invoiceType === "Purchase") {
             const purchaseSeq = await Sequence.findOneAndUpdate(
@@ -107,19 +109,23 @@ const addInvoice = asyncHandler(async (req, res) => {
                 { $inc: { sequence_value: 1 } },
                 { new: true, upsert: true }
             );
-            purchaseId = purchaseSeq.sequence_value;
+            //purchaseId = purchaseSeq.sequence_value;
+            invoiceID = purchaseSeq.sequence_value;
+
         } else if (invoiceType === "Sales") {
             const saleSeq = await Sequence.findOneAndUpdate(
                 { _id: "sequenceSaleId" },
                 { $inc: { sequence_value: 1 } },
                 { new: true, upsert: true }
             );
-            saleId = saleSeq.sequence_value;
+            //saleId = saleSeq.sequence_value;
+            invoiceID = saleSeq.sequence_value;
         }
 
         const newInvoice = await Invoice.create({
-            purchaseId: purchaseId || null,
-            saleId: saleId || null,
+            // purchaseId: purchaseId || null,
+            // saleId: saleId || null,
+            invoiceID: invoiceID,
             invoiceType: invoiceType,
             idUsuario: userId,
             dateIssue: dateIssue,
