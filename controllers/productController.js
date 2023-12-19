@@ -195,10 +195,169 @@ const getProductByUserId = asyncHandler(async (req, res) => {
   }
 });
 
+// const updateProductAmount = asyncHandler(async (req, res) => {
+//   const { typevalue, amount } = req.body;
+
+//   try {
+//     const product = await Product.findById(req.params.productId);
+
+//     if (product) {
+//       if (product.idUsuario.toString() === req.user._id.toString()) {
+//         // Verificar si typevalue es "Sales" o "Purchase"
+//         if (typevalue === "Sales") {
+//           // Restar amount al amount existente
+//           product.amount -= amount;
+//         } else if (typevalue === "Purchase") {
+//           // Sumar amount al amount existente
+//           product.amount += amount;
+//         } else {
+//           // Manejar otro caso si es necesario
+//           res.status(400);
+//           throw new Error('typevalue no es válido');
+//         }
+
+//         const updatedProduct = await product.save();
+//         res.json({ message: 'Producto actualizado con éxito', data: updatedProduct });
+//       } else {
+//         res.status(403);
+//         throw new Error('No tienes permiso para actualizar este producto');
+//       }
+//     } else {
+//       res.status(404);
+//       throw new Error('Producto no encontrado');
+//     }
+//   } catch (error) {
+//     res.status(500).json({ message: 'Error al actualizar el producto', error: error.message });
+//   }
+// });
+
+// const updateProductAmount = asyncHandler(async (req, res) => {
+//   const { typevalue, amount, productId } = req.body;
+
+//   try {
+//     // const product = await Product.findById(req.params.productId);
+//     const product = await Product.findById(productId);
+
+//     if (product) {
+//       if (product.idUsuario.toString() === req.user._id.toString()) {
+//         // Verificar si typevalue es "Sales" o "Purchase"
+//         if (typevalue === "Sales") {
+//           // Restar amount al amount existente
+//           product.amount -= amount;
+//         } else if (typevalue === "Purchase") {
+//           // Sumar amount al amount existente
+//           product.amount += amount;
+//         } else {
+//           // Manejar otro caso si es necesario
+//           res.status(400);
+//           throw new Error('typevalue no es válido');
+//         }
+
+//         const updatedProduct = await product.save();
+//         res.json({ message: 'Producto actualizado con éxito', data: updatedProduct });
+//       } else {
+//         res.status(403);
+//         throw new Error('No tienes permiso para actualizar este producto');
+//       }
+//     } else {
+//       res.status(404);
+//       throw new Error('Producto no encontrado');
+//     }
+//   } catch (error) {
+//     res.status(500).json({ message: 'Error al actualizar el producto', error: error.message });
+//   }
+// });
+
+// const updateProductAmount = asyncHandler(async (req, res) => {
+//   const { typevalue, amount, productId } = req.body;
+
+//   try {
+//     // const product = await Product.findById(mongoose.Types.ObjectId(productId));
+//     const product = await Product.findOne({ productId: productId });
+
+
+//     if (product) {
+//       if (product.idUsuario.toString() === req.user._id.toString()) {
+//         // Verificar si typevalue es "Sales" o "Purchase"
+//         if (typevalue === "Sales") {
+//           // Restar amount al amount existente
+//           product.amount -= amount;
+//         } else if (typevalue === "Purchase") {
+//           // Sumar amount al amount existente
+//           product.amount += amount;
+//         } else {
+//           // Manejar otro caso si es necesario
+//           res.status(400);
+//           throw new Error('typevalue no es válido');
+//         }
+
+//         const updatedProduct = await product.save();
+//         res.json({ message: 'Producto actualizado con éxito', data: updatedProduct });
+//       } else {
+//         res.status(403);
+//         throw new Error('No tienes permiso para actualizar este producto');
+//       }
+//     } else {
+//       res.status(404);
+//       throw new Error('Producto no encontrado');
+//     }
+//   } catch (error) {
+//     res.status(500).json({ message: 'Error al actualizar el producto', error: error.message });
+//   }
+// }); 
+
+const updateProductAmount = asyncHandler(async (req, res) => {
+  // const { typevalue, amount, productId } = req.body; //1
+  const { typevalue, amount } = req.body;
+
+  try {
+    // const product = await Product.findOne({ productId: productId }); //1
+    const product = await Product.findOne({ productId: req.params.productId });
+
+    if (product) {
+      if (product.idUsuario.toString() === req.user._id.toString()) {
+        // Verificar si typevalue es "Sales" o "Purchase"
+        if (typevalue === "Sales" || typevalue === "Purchase") {
+          // Convertir amount a número
+          const numericAmount = parseFloat(amount);
+
+          // Verificar si es un número válido
+          if (!isNaN(numericAmount)) {
+            // Operación según el tipo de valor
+            product.amount += (typevalue === "Sales" ? -numericAmount : numericAmount);
+          } else {
+            res.status(400);
+            throw new Error('amount no es un número válido');
+          }
+        } else {
+          // Manejar otro caso si es necesario
+          res.status(400);
+          throw new Error('typevalue no es válido');
+        }
+
+        const updatedProduct = await product.save();
+        res.json({ message: 'Producto actualizado con éxito', data: updatedProduct });
+      } else {
+        res.status(403);
+        throw new Error('No tienes permiso para actualizar este producto');
+      }
+    } else {
+      res.status(404);
+      throw new Error('Producto no encontrado');
+    }
+  } catch (error) {
+    res.status(500).json({ message: 'Error al actualizar el producto', error: error.message });
+  }
+});
+
+
+
+
 export {
   addProduct,
   updateProduct,
   deleteProduct,
   getProduct,
   getProductByUserId,
+  updateProductAmount
 };
