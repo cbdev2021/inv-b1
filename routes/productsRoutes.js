@@ -5,6 +5,7 @@ import {
   deleteProduct,
   getProduct,
   getProductByUserId,
+  updateProductAmount,
 } from '../controllers/productController.js';
 import { protect } from '../middleware/authMiddleware.js';
 
@@ -16,5 +17,8 @@ router.put('/update-product/:id', protect, updateProduct);
 router.delete('/delete-product/:id', protect, deleteProduct);
 router.get('/get-product/:id', protect, getProduct);
 router.get('/get-products/:idUsuario', protect, getProductByUserId);
+// router.put('/update-product-amount/:productId', protect, updateProductAmount);
+router.put('/update-product-amount/:productId', protect, updateProductAmount);
+
 
 export default router;
