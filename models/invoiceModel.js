@@ -29,11 +29,11 @@ const invoiceSchema = mongoose.Schema(
     },
     subTotal: {
       type: Number,
-      required: true,
+      required: false,
     },
     taxes: {
       type: Number,
-      required: true,
+      required: false,
     },
 
     //Venta
