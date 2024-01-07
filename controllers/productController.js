@@ -109,17 +109,17 @@ const addProduct = asyncHandler(async (req, res) => {
 // @access  Private
 const updateProduct = asyncHandler(async (req, res) => {
   //const { typevalue, subtype, description } = req.body;
-  const { description } = req.body;
+  const { name, description, price, amount } = req.body;
 
   try {
     const product = await Product.findById(req.params.id);
 
     if (product) {
       if (product.idUsuario.toString() === req.user._id.toString()) {
-        // product.typevalue = typevalue;
-        // product.subtype = subtype;
-        // product.description = description;
+        product.name = name;
         product.description = description;
+        product.price = price;
+        product.amount = amount;
 
         const updatedProduct = await product.save();
         res.json({ message: 'Product actualizado con éxito', data: updatedProduct });
@@ -349,48 +349,48 @@ const updateProductAmount = asyncHandler(async (req, res) => {
     //   res.status(500).json({ message: 'Error al actualizar el producto', error: error.message });
     // }
 
-    
-      if (product) {
-        if (product.idUsuario.toString() === req.user._id.toString()) {
-          // Verificar si typevalue es "Sales", "Purchase" o "SaveAmount"
-          if (typevalue === "Sales" || typevalue === "Purchase" || typevalue === "SaveAmount") {
-            // Convertir amount a número
-            const numericAmount = parseFloat(amount);
 
-            // Verificar si es un número válido
-            if (!isNaN(numericAmount)) {
-              // Operación según el tipo de valor
-              if (typevalue === "Sales" || typevalue === "Purchase") {
-                product.amount += (typevalue === "Sales" ? -numericAmount : numericAmount);
-              } else if (typevalue === "SaveAmount") {
-                // Actualizar el valor de "amount" directamente
-                product.amount = numericAmount;
-              }
-            } else {
-              res.status(400);
-              throw new Error('amount no es un número válido');
+    if (product) {
+      if (product.idUsuario.toString() === req.user._id.toString()) {
+        // Verificar si typevalue es "Sales", "Purchase" o "SaveAmount"
+        if (typevalue === "Sales" || typevalue === "Purchase" || typevalue === "SaveAmount") {
+          // Convertir amount a número
+          const numericAmount = parseFloat(amount);
+
+          // Verificar si es un número válido
+          if (!isNaN(numericAmount)) {
+            // Operación según el tipo de valor
+            if (typevalue === "Sales" || typevalue === "Purchase") {
+              product.amount += (typevalue === "Sales" ? -numericAmount : numericAmount);
+            } else if (typevalue === "SaveAmount") {
+              // Actualizar el valor de "amount" directamente
+              product.amount = numericAmount;
             }
-
-            const updatedProduct = await product.save();
-            res.json({ message: 'Producto actualizado con éxito', data: updatedProduct });
           } else {
-            // Manejar otro caso si es necesario
             res.status(400);
-            throw new Error('typevalue no es válido');
+            throw new Error('amount no es un número válido');
           }
+
+          const updatedProduct = await product.save();
+          res.json({ message: 'Producto actualizado con éxito', data: updatedProduct });
         } else {
-          res.status(403);
-          throw new Error('No tienes permiso para actualizar este producto');
+          // Manejar otro caso si es necesario
+          res.status(400);
+          throw new Error('typevalue no es válido');
         }
       } else {
-        res.status(404);
-        throw new Error('Producto no encontrado');
+        res.status(403);
+        throw new Error('No tienes permiso para actualizar este producto');
       }
-    } catch (error) {
-      res.status(500).json({ message: 'Error al actualizar el producto', error: error.message });
+    } else {
+      res.status(404);
+      throw new Error('Producto no encontrado');
     }
- 
-  });
+  } catch (error) {
+    res.status(500).json({ message: 'Error al actualizar el producto', error: error.message });
+  }
+
+});
 
 export {
   addProduct,
