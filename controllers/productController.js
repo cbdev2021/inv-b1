@@ -109,7 +109,7 @@ const addProduct = asyncHandler(async (req, res) => {
 // @access  Private
 const updateProduct = asyncHandler(async (req, res) => {
   //const { typevalue, subtype, description } = req.body;
-  const { name, description, price, amount } = req.body;
+  const { name, description, price, amount, utility } = req.body;
 
   try {
     const product = await Product.findById(req.params.id);
@@ -120,6 +120,7 @@ const updateProduct = asyncHandler(async (req, res) => {
         product.description = description;
         product.price = price;
         product.amount = amount;
+        product.utility = utility;
 
         const updatedProduct = await product.save();
         res.json({ message: 'Product actualizado con éxito', data: updatedProduct });

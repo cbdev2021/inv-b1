@@ -27,6 +27,10 @@ const productSchema = mongoose.Schema(
       type: Number,
       required: false,
     },
+    utility: {
+      type: Number,
+      required: false,
+    },
     // subtype: {
     //   type: String,
     //   required: true,
