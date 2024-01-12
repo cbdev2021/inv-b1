@@ -7,7 +7,7 @@ import Sequence from '../models/sequenceModel.js';
 // @access  Private
 const addProductInvoice = asyncHandler(async (req, res) => {
   // const { name, description, price, amount } = req.body;
-  const { invoiceType, invoiceID, name, description, price, amount } = req.body;
+  const { invoiceType, invoiceID, name, description, price, amount, dateIssue, utility } = req.body;
   const userId = req.user._id;
 
   try {
@@ -28,6 +28,8 @@ const addProductInvoice = asyncHandler(async (req, res) => {
       description: description,
       price: price,
       amount: amount,
+      dateIssue: dateIssue,
+      utility: utility
     });
 
     if (newProductInvoice) {
