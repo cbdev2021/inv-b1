@@ -35,6 +35,14 @@ const productInvoiceSchema = mongoose.Schema(
       type: Number,
       required: true,
     },
+    dateIssue: {
+      type: Date,
+      required: true,
+    },
+    utility: {
+      type: Number,
+      required: true,
+    },
   },
   {
     timestamps: true,
