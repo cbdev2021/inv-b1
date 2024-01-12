@@ -60,7 +60,7 @@ import Sequence from '../models/sequenceModel.js';
 const addProduct = asyncHandler(async (req, res) => {
 
   //const { description, idUsuario } = req.body;
-  const { name, description, price, amount } = req.body;
+  const { name, description, price, amount, utility } = req.body;
 
   const userId = req.user._id;
 
@@ -82,7 +82,8 @@ const addProduct = asyncHandler(async (req, res) => {
       name: name,
       description: description,
       price: price,
-      amount: amount
+      amount: amount,
+      utility: utility
       //idUsuario: idUsuario
     });
 
