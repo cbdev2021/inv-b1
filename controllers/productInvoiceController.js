@@ -130,10 +130,32 @@ const getProductByUserIdInvoice = asyncHandler(async (req, res) => {
   }
 });
 
+// @desc    Eliminar todos los registros por invoiceID
+// @route   DELETE /api/users/delete-products-by-invoice/:invoiceID
+// @access  Private
+const deleteProductsByInvoiceID = asyncHandler(async (req, res) => {
+  const invoiceID = req.params.invoiceID;
+  const userId = req.user._id;
+
+  try {
+    const deletedProducts = await ProductInvoice.deleteMany({ idUsuario: userId, invoiceID: invoiceID });
+
+    if (deletedProducts.deletedCount > 0) {
+      res.json({ message: `Se eliminaron ${deletedProducts.deletedCount} ProductInvoice con invoiceID ${invoiceID}` });
+    } else {
+      res.status(404);
+      throw new Error(`No se encontraron ProductInvoice con invoiceID ${invoiceID}`);
+    }
+  } catch (error) {
+    res.status(500).json({ message: 'Error al eliminar ProductInvoice', error: error.message });
+  }
+});
+
 export {
   addProductInvoice,
   updateProductInvoice,
   deleteProductInvoice,
   getProductInvoice,
   getProductByUserIdInvoice,
+  deleteProductsByInvoiceID, // Agrega esta función al export para que esté disponible en las rutas
 };
