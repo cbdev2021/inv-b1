@@ -303,7 +303,8 @@ const updateInvoice = asyncHandler(async (req, res) => {
 // @route   DELETE /api/invoices/delete-invoice/:id
 // @access  Public
 const deleteInvoice = asyncHandler(async (req, res) => {
-    const invoiceId = req.params.id;
+    const invoiceId = req.params.id;    
+    //const invoiceId = req.params.invoiceID;//spring boot
 
     const removedInvoice = await Invoice.findByIdAndDelete(invoiceId);
 
