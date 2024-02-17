@@ -14,7 +14,8 @@ const router = express.Router();
 // Rutas para tipos de valor
 router.post('/add-product-invoice', protect, addProductInvoice);
 router.put('/update-product-invoice/:id', protect, updateProductInvoice);
-router.delete('/delete-product-invoice/:id', protect, deleteProductInvoice);
+// router.delete('/delete-product-invoice/:id', protect, deleteProductInvoice); invoiceID
+router.delete('/delete-product-invoice/:invoiceID', protect, deleteProductInvoice); 
 router.get('/get-product-invoice/:id', protect, getProductInvoice);
 router.get('/get-products-invoice/:idUsuario', protect, getProductByUserIdInvoice);
 router.delete('/delete-products-invoice-id/:invoiceID', protect, deleteProductsByInvoiceID);
